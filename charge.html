@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./charge.css" rel="stylesheet" type="text/css">
+    <script src="./jquery-4.0.0.min.js" type="text/javascript"></script>
+    <script src="./charge.js" type="text/javascript"></script>
+    <title>Charge</title>
+</head>
+<body>
+    <h1>Charge</h1>
+    <div class="game-container">
+        <h2>Turn <span id="turn-number"></span></h2>
+        <h2>Charges: <span id="player-charge-count"></span></h2>
+        <div class="button-grid">
+            <h3>What's your move?</h3>
+            <div class="button-row">
+                <button class="move-button" id="charge-button">Charge</button>
+                <p>Charge</p>
+            </div>
+            <div class="button-row">
+                <div>
+                    <button class="move-button" id="bang-button">Bang</button>
+                    <button class="move-button" id="spell-button">Spell</button>
+                    <button class="move-button" id="slash-button">Slash</button>
+                </div>
+                <p>Attack</p>
+            </div>
+            <div class="button-row">
+                <div>
+                    <button class="move-button" id="bang-block-button">Bang Block</button>
+                    <button class="move-button" id="spell-block-button">Spell Block</button>
+                    <button class="move-button" id="slash-block-button">Slash Block</button>
+                </div>
+                <p>Defend</p>
+            </div>
+        </div>
+    </div>
+    <h2 id="player-move"></h2>
+    <h2 id="opponent-move"></h2>
+    <h2 id="result"></h2>
+    <div class="play-again-container">
+        <button id="play-again-button">Play Again</button>
+    </div>
+</body>
+</html>

@@ -1,7 +1,3 @@
-const readline = require('node:readline/promises');
-const {stdin: input, stdout: output} = require('node:process');
-const rl = readline.createInterface({input, output});
-
 class Move {
     constructor(name, cost, type, beats) {
         this.name = name;
@@ -45,16 +41,57 @@ let playerMove;
 let opponentMove;
 let result;
 
-async function promptPlayerMove() {
-    let retVal;
-    let playerMove;
+$(function() {
+    updateDisplay();
 
-    do {
-        playerMove = await rl.question("What's your move? ");
-        retVal = moves.has(playerMove) ? moves.get(playerMove) : null;
-    } while (!retVal);
+    $('.move-button').on('click', function() {
+        playerMove = moves.get($(this).html());
+        opponentMove = generateOpponentMove();
 
-    return retVal;
+        playerCharges -= playerMove.cost;
+        opponentCharges -= opponentMove.cost;
+
+        result = playerCharges < 0 ? 'POOF! Opponent wins.' : playerMove.beats && playerMove.beats.includes(opponentMove) ? 'You Win!' : opponentMove.beats && opponentMove.beats.includes(playerMove) ? 'Opponent Wins!' : 'Game continues.';
+
+        turn++;
+
+        updateDisplay(result);
+    });
+
+    $('#play-again-button').on('click', function() {
+        resetGame();
+        $('.game-container').css('display', 'flex');
+        $('.play-again-container').css('display', 'none');
+        updateDisplay('');
+    });
+});
+
+function updateDisplay(result) {
+    $('#result').html(result);
+
+    if (turn === 1 || result === 'Game continues.') {
+        $('#turn-number').html(turn);
+        $('#player-charge-count').html(playerCharges);
+
+        if (playerMove) {
+            $('#player-move').css('display', 'block');
+            $('#player-move').html(`Your Move: ${playerMove.name}`);
+        } else {
+            $('#player-move').css('display', 'none');
+        }
+
+        if (opponentMove) {
+            $('#opponent-move').css('display', 'block');
+            $('#opponent-move').html(`Opponent Move: ${opponentMove.name}`);
+        } else {
+            $('#opponent-move').css('display', 'none');
+        }
+    } else {
+        $('#player-move').html(`Your Move: ${playerMove.name}`);
+        $('#opponent-move').html(`Opponent Move: ${opponentMove.name}`);
+        $('.game-container').css('display', 'none');
+        $('.play-again-container').css('display', 'flex');
+    }
 }
 
 function generateOpponentMove() {
@@ -74,13 +111,6 @@ function generateOpponentMove() {
     return opponentMove;
 }
 
-async function promptPlayAgain() {
-    let choice = await rl.question('Play Again? ');
-    choice = choice.toLowerCase();
-
-    return choice === 'yes'
-}
-
 function resetGame() {
     turn = 1;
     playerCharges = 2;
@@ -89,37 +119,3 @@ function resetGame() {
     opponentMove = null;
     result = null;
 }
-
-async function play() {
-    while (isGameOngoing) {
-        console.log(`Turn ${turn}`);
-        console.log(`Your Charges: ${playerCharges}`);
-        console.log(`Opponent Charges: ${opponentCharges}`);
-
-        playerMove = await promptPlayerMove();
-        opponentMove = generateOpponentMove();
-
-        playerCharges -= playerMove.cost;
-        opponentCharges -= opponentMove.cost;
-
-        result = playerCharges < 0 ? 'POOF! Opponent wins.' : playerMove.beats && playerMove.beats.includes(opponentMove) ? 'You Win!' : opponentMove.beats && opponentMove.beats.includes(playerMove) ? 'Opponent Wins!' : 'Game continues.';
-
-        console.log(`Your Move: ${playerMove.name}`);
-        console.log(`Opponent Move: ${opponentMove.name}`);
-        console.log(`${result}\n`);
-
-        turn++;
-
-        if (!(result === 'Game continues.')) {
-            const playAgain = await promptPlayAgain();
-            if (playAgain) {
-                resetGame();
-            } else {
-                isGameOngoing = false;
-                rl.close();
-            }
-        }
-    }
-}
-
-play();
