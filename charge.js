@@ -87,8 +87,12 @@ function updateDisplay(result) {
             $('#opponent-move').css('display', 'none');
         }
     } else {
+        $('#player-move').css('display', 'block');
         $('#player-move').html(`Your Move: ${playerMove.name}`);
+
+        $('#opponent-move').css('display', 'block');
         $('#opponent-move').html(`Opponent Move: ${opponentMove.name}`);
+        
         $('.game-container').css('display', 'none');
         $('.play-again-container').css('display', 'flex');
     }
