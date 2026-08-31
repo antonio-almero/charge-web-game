@@ -4,15 +4,19 @@ Next task: better GUI
 <br><br>
 # RUN INSTRUCTIONS
 
-TUI Mode:
-<br><br>
-In cmd:
+First-time build:
+```
+npm install
+```
+
+## TUI Mode
+
+1. In cmd:
 ```
 node chargeTUI.js
 ```
-<br>
-GUI Mode:
-<br><br>
+
+## GUI Mode
 
 1. In cmd:
 
