@@ -46,15 +46,23 @@ let opponentMove;
 let result;
 
 async function promptPlayerMove() {
+    let moveNames = Array.from(moves.keys())
     let retVal;
     let playerMove;
 
     do {
+        printMoves(moveNames);
         playerMove = await rl.question("What's your move? ");
-        retVal = moves.has(playerMove) ? moves.get(playerMove) : null;
+        retVal = playerMove < 7 && playerMove >= 0 ? moves.get(moveNames[playerMove-1]) : null;
     } while (!retVal);
 
     return retVal;
+}
+
+function printMoves(moveNames) {
+    for (let i = 0; i < moveNames.length; i++) {
+        console.log(`${i+1} - ${moveNames[i]}`)
+    }
 }
 
 function generateOpponentMove() {
